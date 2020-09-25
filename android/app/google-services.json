@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "302030633657",
+    "firebase_url": "https://simplechatapp-fa971.firebaseio.com",
+    "project_id": "simplechatapp-fa971",
+    "storage_bucket": "simplechatapp-fa971.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302030633657:android:3f31f48205622b2a80b968",
+        "android_client_info": {
+          "package_name": "com.example.talky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302030633657-hheuq690pgf6d4p7l3ukoh7c39kmbmhh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF4HVLY_f5NQHmgQagPxE4fy_MW_Fzbtk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302030633657-hheuq690pgf6d4p7l3ukoh7c39kmbmhh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
