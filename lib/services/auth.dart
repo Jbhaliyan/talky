@@ -1,55 +1,68 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:talky/screens/chatRoom.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class AuthMethods {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class AuthClass {
+  GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+  FirebaseAuth auth = FirebaseAuth.instance;
+  final storage = new FlutterSecureStorage();
 
-  // User _userFromFirebaseUser(FirebaseUser user) {
-  //   return (user != null) ? User(userId: user.uid) : null;
-  // }
-
-  Future<UserCredential> signInWithEmailAndPassword(
-      String email, String password) async {
+  Future<void> googleSignIn(BuildContext context) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      // User firebaseUser = userCredential.user;
-      // if (firebaseUser != null)
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password!!');
+      GoogleSignInAccount googleSignInAccount = await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+
+        AuthCredential credential = GoogleAuthProvider.credential(
+            idToken: googleSignInAuthentication.idToken,
+            accessToken: googleSignInAuthentication.accessToken);
+
+        try {
+          UserCredential userCredential =
+              await auth.signInWithCredential(credential);
+          storeTokenAndData(userCredential);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (builder) => ChatRoom()),
+              (route) => false);
+        } catch (e) {
+          final snackBar = SnackBar(content: Text(e.toString()));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+      } else {
+        final snackBar = SnackBar(content: Text("Not Able to sign in"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
-  Future<UserCredential> singUpWithEmailAndPassword(
-      String email, String password) async {
-    try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password')
-        print('The password is too weak');
-      else if (e.code == 'email-already-in-use')
-        print('The account already exists for that email.');
-    } catch (e) {
-      print(e.toString());
-    }
+  Future<void> storeTokenAndData(UserCredential userCredential) async {
+    await storage.write(
+        key: "token", value: userCredential.credential.token.toString());
+    await storage.write(
+        key: "userCredential", value: userCredential.toString());
   }
 
-  Future resetPassword(String email) async {
-    try {
-      return await _auth.sendPasswordResetEmail(email: email);
-    } catch (e) {
-      print(e.toString());
-    }
+  Future<String> getToken() async {
+    return await storage.read(key: "token");
   }
 
-  Future signOut() async {
+  Future<void> logOut() async {
     try {
-      return await _auth.signOut();
-    } catch (e) {
-      print(e.toString());
-    }
+      await _googleSignIn.signOut();
+      await auth.signOut();
+      await storage.delete(key: "token");
+    } catch (e) {}
   }
 }
