@@ -76,18 +76,31 @@ class _SignInState extends State<SignIn> {
                     SizedBox(
                       height: 1.0,
                     ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        alignment: Alignment.centerRight,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 8.0),
-                          child: Text("Forgot Password?",
-                              style: mediumTextStyle()),
+                    TextButton(
+                      onPressed: null,
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                          EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                         ),
+                        alignment: Alignment.centerRight,
+                      ),
+                      child: Text(
+                        "Forgot Password?",
+                        style: mediumTextStyle(),
                       ),
                     ),
+                    // GestureDetector(
+                    //   onTap: () {},
+                    //   child: Container(
+                    //     alignment: Alignment.centerRight,
+                    //     child: Container(
+                    //       padding: EdgeInsets.symmetric(
+                    //           horizontal: 16.0, vertical: 8.0),
+                    //       child: Text("Forgot Password?",
+                    //           style: mediumTextStyle()),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 8.0),
                     GestureDetector(
                         onTap: () {

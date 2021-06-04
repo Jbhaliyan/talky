@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:talky/screens/search.dart';
@@ -66,9 +67,11 @@ Widget googleButton(BuildContext context) {
 
 Widget button(context, String text) {
   return Container(
-    alignment: Alignment.center,
-    width: MediaQuery.of(context).size.width,
-    padding: EdgeInsets.symmetric(vertical: 20),
+    // alignment: Alignment.center,
+    // width: 200,
+    // height: 60,
+    // width: MediaQuery.of(context).size.width,
+    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
     decoration: BoxDecoration(
       gradient: LinearGradient(
         colors: [
@@ -86,11 +89,3 @@ Widget button(context, String text) {
     ),
   );
 }
-
-// Widget searchList() {
-//   return ListView.builder(
-//     itemBuilder: (BuildContext context, int index) {
-//       return SearchTile(userName: "", userEmail: "");
-//     },
-//   );
-// }
